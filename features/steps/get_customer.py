@@ -6,7 +6,7 @@ from customer_service.model.customer import Customer
 @given('customer "{name}" with ID "{customer_id:d}" exists')
 def create_customer(context, name, customer_id):
     (first_name, surname) = name.split(' ', 2)
-
+    context.customer_id = customer_id
     customer = Customer(customer_id=customer_id,
                         first_name=first_name,
                         surname=surname)

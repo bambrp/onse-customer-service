@@ -4,3 +4,8 @@ def get_customer(customer_id, customer_repository):
 
 def create_customer(customer, customer_repository):
     customer_repository.store(customer)
+
+
+def update_surname(customer_id, new_surname, customer_repository):
+    print("=========== update_surname")
+    customer_repository.update_surname(customer_id, new_surname)

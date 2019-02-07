@@ -19,6 +19,13 @@ class PostgreSQLCustomerRepository:
         self.session.add(customer)
         self.session.commit()
 
+    def update_surname(self, customer_id, new_surname):
+        customer = self.session.query(Customer) \
+            .filter(Customer.customer_id == customer_id) \
+            .one()
+        customer.surname = new_surname
+        self.session.commit()
+
     def fetch_by_id(self, customer_id):
         try:
             return self.session \

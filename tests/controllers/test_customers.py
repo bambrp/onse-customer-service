@@ -1,5 +1,6 @@
 from unittest import mock
 from unittest.mock import patch
+from http import HTTPStatus
 
 import pytest
 
@@ -41,7 +42,7 @@ def test_create_customer(create_customer, web_client, customer_repository):
 
     response = web_client.post('/customers/', json=request_body)
 
-    assert response.status_code == 201
+    assert response.status_code == HTTPStatus.CREATED
 
     create_customer.assert_called_with(
         customer=mock.ANY,
@@ -60,6 +61,31 @@ def test_create_customer(create_customer, web_client, customer_repository):
         firstName='Jez',
         surname='Humble',
         customerId='None')  # ID isNone because call is mocked
+
+
+# @patch('customer_service.model.commands.update_surname')
+def test_update_surname(web_client, customer_repository):
+    request_body = dict(firstName='Jez', surname='Humble')
+
+    response = web_client.post('/customers/', json=request_body)
+    assert response.status_code == HTTPStatus.CREATED
+
+    customer_id = str(1)
+    request_body = dict(newSurname='Smith')
+
+    response = web_client.post(f'/customers/update/{customer_id}',
+                               json=request_body)
+
+    assert response.status_code == HTTPStatus.ACCEPTED
+
+    assert response.is_json
+
+    account = response.get_json()
+
+    assert account == dict(
+        firstName='Jez',
+        surname='Smith',
+        customerId=customer_id)
 
 
 @pytest.mark.parametrize(

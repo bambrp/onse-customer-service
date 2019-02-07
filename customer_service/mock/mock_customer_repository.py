@@ -13,6 +13,9 @@ class MockCustomerRepository:
 
         self.customers[customer.customer_id] = customer
 
+    def update_surname(self, customer_id, new_surname):
+        self.customers[customer_id].surname = new_surname
+
     def fetch_by_id(self, id):
         if id not in self.customers:
             raise CustomerNotFound()
